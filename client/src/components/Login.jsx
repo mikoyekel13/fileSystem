@@ -15,7 +15,7 @@ function Login() {
         },
         body: JSON.stringify({ username: userName, password: passWord }),
       });
-      if (found.status !== 200) throw new Error("user was not found");
+      if (!found.ok) throw new Error("user was not found");
       goToUserSpace(`/${userName}`);
     } catch (err) {
       console.log(err);
