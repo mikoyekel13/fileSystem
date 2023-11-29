@@ -19,6 +19,31 @@ function UserSpace() {
   useEffect(() => {
     setUserFiles(loadFiles());
   }, []);
+
+  return (
+    <>
+      {userFiles.map(file, (index) => {
+        {
+          file.type === "File" ? (
+            <File
+              key={index}
+              name={file.name}
+              type={file.type}
+              size={file.size_kilobite}
+              extension={file.extensionName}
+            />
+          ) : (
+            <Folder
+              key={index}
+              name={file.name}
+              type={file.type}
+              size={file.size_kilobite}
+            />
+          );
+        }
+      })}
+    </>
+  );
 }
 
 export default UserSpace;
