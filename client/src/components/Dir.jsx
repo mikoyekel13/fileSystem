@@ -10,11 +10,10 @@ const Dir = (props) => {
 
   async function showDataFunc() {
     try {
-      const found = await fetch(
-        `http://localhost:3000${currUser}/${props.name}`
-      );
+      let found = await fetch(`http://localhost:3000${currUser}/${props.name}`);
       if (!found.ok) throw new Error("error accoured");
-      setDirData(found);
+      found = found.json();
+      setDirData(found.name);
       setShowData((prev) => !prev);
     } catch (err) {
       console.log(err);
@@ -78,7 +77,13 @@ const Dir = (props) => {
           Delete
         </button>
       </form>
-      {showData && <div>{dirData}</div>}
+      {showData &&
+        dirData.map((file, index) => (
+          <>
+            <h4 key={index}>{file}</h4>
+            <br />
+          </>
+        ))}
     </>
   );
 };

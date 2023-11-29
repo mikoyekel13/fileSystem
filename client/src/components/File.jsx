@@ -5,19 +5,19 @@ const File = (props) => {
   const [showInfo, setShowInfo] = useState(false);
   const goToFileData = useNavigate();
   let location = useLocation();
-  const currUser = location.pathname;
+  const currLocation = location.pathname;
   let extension = props.name.split(".");
   extension = extension[extension.length - 1];
 
   async function showData() {
-    goToFileData(`${currUser}/${props.name}`);
+    goToFileData(`${currLocation}/${props.name}`);
   }
 
   async function renameFile() {
     const newName = window.prompt("What is the new name?");
     try {
       const found = await fetch(
-        `http://localhost:3000${currUser}/${props.name}`,
+        `http://localhost:3000${currLocation}/${props.name}`,
         {
           method: "PATCH",
           headers: {
@@ -36,7 +36,7 @@ const File = (props) => {
   async function deleteFile() {
     try {
       const found = await fetch(
-        `http://localhost:3000${currUser}/${props.name}`,
+        `http://localhost:3000${currLocation}/${props.name}`,
         {
           method: "DELETE",
         }
