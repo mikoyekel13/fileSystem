@@ -58,8 +58,7 @@ function getUserFiles(username) {
       } else {
         result.push({
           name: file,
-          type: "Directory",
-          size_KiloByte: stats.size,
+          type: "Directory"
         });
         const secondFiles = fs.readdirSync(
           `${path.resolve("./public")}/users/${username}/${file}`
@@ -90,10 +89,31 @@ function getFile(username, file){
   }  
 }
 
+function getDir(username, file){
+  try{const theDir = fs.readdirSync(
+    `${path.resolve("./public")}/users/${username}/${file}`)
+    return theDir;
+  }
+  catch(err){
+    return null;
+  }  
+}
+
+
 router.get("/:username/:filename", (req, res)=>{
-  const currFile= getFile(req.params.username, req.params.filename)
-  if(!currFile) res.status(404).send("404 not found");
-  res.send(JSON.stringify(currFile))
+  const stats = fs.statSync(
+    `${path.resolve("./public")}/users/${req.params.username}/${req.params.filename}`
+  );
+  if(stats.isDirectory()){
+    const currDir= getDir(req.params.username, req.params.filename)
+    if(!currDir) res.status(404).send("404 not found");
+  res.send(JSON.stringify(currDir))
+  }
+  else{
+    const currFile= getFile(req.params.username, req.params.filename)
+    if(!currFile) res.status(404).send("404 not found");
+    res.send(JSON.stringify(currFile))
+  }
 })
 
 router.patch("/:username/:filename", (req, res)=>{
