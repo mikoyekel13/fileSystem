@@ -16,7 +16,7 @@ function Login() {
         },
         body: { username: userName, password: passWord },
       });
-      if ((found.status = 404)) throw new Error("user was not found");
+      if (found.status === 404) throw new Error("user was not found");
       goToUserSpace(`/${userName}`);
     } catch (err) {
       console.log(err);
