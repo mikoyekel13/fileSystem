@@ -11,7 +11,9 @@ const Dir = (props) => {
   async function showDataFunc() {
     try {
       let found = await fetch(`http://localhost:3000${currUser}/${props.name}`);
+      let found = await fetch(`http://localhost:3000${currUser}/${props.name}`);
       if (!found.ok) throw new Error("error accoured");
+      found = await found.json();
       found = found.json();
       setDirData(found.name);
       setShowData((prev) => !prev);
