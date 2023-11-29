@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const fs = require("fs");
+const path = require("path");
 
 const users = [
   {
@@ -22,6 +23,8 @@ const users = [
 ];
 
 router.post("/", (req, res) => {
+  // const userBody = JSON.parse(req.body);
+  console.log(req.body);
   const currUser = users.find(
     (user) =>
       user.username === req.body.username && user.password === req.body.password
@@ -35,13 +38,21 @@ router.get("/:username", (req, res) => {
 });
 
 function getUserFiles(username) {
-  result = [];
-  const firstFiles = fs.readdirSync(`/users/${username}`);
-  firstFiles.forEach((file) => {
-    if (!fs.isDir(file)) result.push({ name: file, type: "File" });
-    else {
+  const result = [];
+  const firstFiles = fs.readdirSync(
+    `${path.resolve("./public")}/users/${username}`
+  );
+  firstFiles.forEach(async (file) => {
+    const stats = fs.statSync(
+      `${path.resolve("./public")}/users/${username}/${file}`
+    );
+    if (!stats.isDirectory()) {
+      result.push({ name: file, type: "File" });
+    } else {
       result.push({ name: file, type: "Directory" });
-      const secondFiles = fs.readdirSync(`/users/${username}/${file}`);
+      const secondFiles = fs.readdirSync(
+        `${path.resolve("./public")}/users/${username}/${file}`
+      );
       secondFiles.forEach((file) => {
         result.push({ name: file, type: "File" });
       });
