@@ -80,10 +80,19 @@ function getFile(username, file) {
 
 function getDir(username, file) {
   try {
+    const result = [];
     const theDir = fs.readdirSync(
       `${path.resolve("./public")}/users/${username}/${file}`
     );
-    return theDir;
+    theDir.forEach(async (file) => {
+      result.push({
+        name: file,
+        type: "File",
+        size_KiloByte: stats.size,
+        extensionName: path.extname(file),
+      });
+    });
+    return result;
   } catch (err) {
     return null;
   }
@@ -130,6 +139,57 @@ router.delete("/:username/:filename", (req, res) => {
   }`;
 
   if (fs.existsSync(filePath)) {
+    const stats = fs.statSync(filePath);
+    if (stats.isDirectory()) {
+      fs.rmdir(filePath, { recursive: true }, (err) => {
+        if (err) {
+          console.error(`Error removing directory: ${err}`);
+          res.status(404).send("404 not found");
+        } else {
+          console.log("Directory has been removed successfully.");
+          res.send("ok");
+        }
+      });
+    } else {
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error(`Error deleting file: ${err}`);
+          res.status(404).send("404 not found");
+        } else {
+          console.log("File has been deleted successfully.");
+          res.send("ok");
+        }
+      });
+    }
+  } else {
+    console.log("File does not exist.");
+  }
+});
+
+router.patch("/:username/:dirname/:filename", (req, res) => {
+  const currFile = `${path.resolve("./public")}/users/${req.params.username}/${
+    req.params.dirname
+  }/${req.params.filename}`;
+  const newPath = `${path.resolve("./public")}/users/${req.params.username}/${
+    req.params.dirname
+  }/${req.body.name}`;
+  fs.rename(currFile, newPath, (err) => {
+    if (err) {
+      console.error(`Error renaming file: ${err}`);
+      res.status(404).send("404 not found");
+    } else {
+      console.log("File has been renamed successfully.");
+      res.send("ok");
+    }
+  });
+});
+
+router.delete("/:username/:dirname/:filename", (req, res) => {
+  filePath = `${path.resolve("./public")}/users/${req.params.username}/${
+    req.params.dirname
+  }/${req.params.filename}`;
+
+  if (fs.existsSync(filePath)) {
     fs.unlink(filePath, (err) => {
       if (err) {
         console.error(`Error deleting file: ${err}`);
@@ -143,5 +203,4 @@ router.delete("/:username/:filename", (req, res) => {
     console.log("File does not exist.");
   }
 });
-
 module.exports = router;
