@@ -1,19 +1,22 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-const FileData = () => {
+const ShowData = () => {
   const [fileData, setFileData] = useState(null);
   let location = useLocation();
   const currLocation = location.pathname;
+  let extension = currLocation.split(".");
+  extension = extension[extension.length - 1];
+  let imgName = currLocation.split("/");
+  imgName = imgName[extension.length - 1];
+  console.log(imgName);
 
   useEffect(() => {
     async function loadFileData() {
       try {
-        const fileData = await fetch(`http://localhost:3000${currLocation}`);
+        let fileData = await fetch(`http://localhost:3000${currLocation}`);
         if (fileData.status !== 200) throw new Error("no data found");
-
-        console.log(fileData);
-
+        fileData = await fileData.json();
         return fileData;
       } catch (err) {
         console.log(err);
@@ -26,7 +29,15 @@ const FileData = () => {
     });
   }, [currLocation]);
 
-  return <div>{fileData}</div>;
+  return (
+    <div>
+      {extension === "txt" ? (
+        <p>{fileData}</p>
+      ) : (
+        <img src={`http://localhost:3000/users/miko/${imgName}`} />
+      )}
+    </div>
+  );
 };
 
-export default FileData;
+export default ShowData;

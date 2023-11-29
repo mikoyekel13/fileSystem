@@ -7,6 +7,7 @@ function UserSpace() {
   let location = useLocation();
   const currUser = location.pathname;
   const [userFiles, setUserFiles] = useState([]);
+  const [filesChanged, setFilesChanged] = useState(false);
 
   useEffect(() => {
     async function loadFiles() {
@@ -21,11 +22,10 @@ function UserSpace() {
         return null;
       }
     }
-
     loadFiles().then((value) => {
       setUserFiles(value);
     });
-  }, [currUser]);
+  }, [currUser, filesChanged]);
 
   return (
     <>
@@ -38,9 +38,14 @@ function UserSpace() {
                 name={file.name}
                 size={file.size_KiloByte}
                 extension={file.extensionName}
+                setFilesChanged={setFilesChanged}
               />
             ) : (
-              <Dir key={index} name={file.name} size={file.size_kilobite} />
+              <Dir
+                key={index}
+                name={file.name}
+                setFilesChanged={setFilesChanged}
+              />
             );
           }
         })}

@@ -2,7 +2,7 @@ import "./App.css";
 import Login from "./components/Login";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UserSpace from "./components/UserSpace";
-import FileData from "./components/FileData";
+import ShowData from "./components/ShowData";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/:username" element={<UserSpace />} />
-          <Route path="/:username/:filename" element={<FileData />} />
+          <Route path="/:username/:filename" element={<ShowData />} />
         </Routes>
       </BrowserRouter>
     </>

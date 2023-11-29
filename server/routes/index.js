@@ -23,7 +23,6 @@ const users = [
 ];
 
 router.post("/", (req, res) => {
-  console.log(req.body);
   const currUser = users.find(
     (user) =>
       user.username === req.body.username && user.password === req.body.password
@@ -59,18 +58,6 @@ function getUserFiles(username) {
         result.push({
           name: file,
           type: "Directory",
-          size_KiloByte: stats.size,
-        });
-        const secondFiles = fs.readdirSync(
-          `${path.resolve("./public")}/users/${username}/${file}`
-        );
-        secondFiles.forEach((file) => {
-          result.push({
-            name: file,
-            type: "File",
-            size_KiloByte: stats.size,
-            extensionName: path.extname(file),
-          });
         });
       }
     });
@@ -80,52 +67,61 @@ function getUserFiles(username) {
   return result;
 }
 
-function getFile(username, file){
-  try{const theFile = fs.readFileSync(
-    `${path.resolve("./public")}/users/${username}/${file}`)
+function getFile(username, file) {
+  console.log(username, file);
+  try {
+    const theFile = fs.readFileSync(
+      `${path.resolve("./public")}/users/${username}/${file}`,
+      { encoding: "utf-8" }
+    );
     return theFile;
-  }
-  catch(err){
+  } catch (err) {
     return null;
-  }  
+  }
 }
 
-router.get("/:username/:filename", (req, res)=>{
-  const currFile= getFile(req.params.username, req.params.filename)
-  if(!currFile) res.status(404).send("404 not found");
-  res.send(JSON.stringify(currFile))
-})
+router.get("/:username/:filename", (req, res) => {
+  const currFile = getFile(req.params.username, req.params.filename);
+  if (!currFile) res.status(404).send("404 not found");
+  res.send(JSON.stringify(currFile));
+});
 
-router.patch("/:username/:filename", (req, res)=>{
-  const currName= req.params.filename;
-  const newName= req.body.name;
-
-  fs.rename(currName, newName, (err) => {
+router.patch("/:username/:filename", (req, res) => {
+  const currFile = `${path.resolve("./public")}/users/${req.params.username}/${
+    req.params.filename
+  }`;
+  const newPath = `${path.resolve("./public")}/users/${req.params.username}/${
+    req.body.name
+  }`;
+  fs.rename(currFile, newPath, (err) => {
     if (err) {
       console.error(`Error renaming file: ${err}`);
+      res.status(404).send("404 not found");
     } else {
-      console.log('File has been renamed successfully.');
+      console.log("File has been renamed successfully.");
+      res.send("ok");
     }
   });
-})
+});
 
-router.delete("/:username/:filename", (req, res)=>{
-  filePath= `${path.resolve("./public")}/users/${req.params.username}/${req.params.filename}`;
+router.delete("/:username/:filename", (req, res) => {
+  filePath = `${path.resolve("./public")}/users/${req.params.username}/${
+    req.params.filename
+  }`;
 
   if (fs.existsSync(filePath)) {
     fs.unlink(filePath, (err) => {
       if (err) {
         console.error(`Error deleting file: ${err}`);
+        res.status(404).send("404 not found");
       } else {
-        console.log('File has been deleted successfully.');
+        console.log("File has been deleted successfully.");
+        res.send("ok");
       }
     });
   } else {
-    console.log('File does not exist.');
+    console.log("File does not exist.");
   }
-
-})
-
-
+});
 
 module.exports = router;
