@@ -80,4 +80,52 @@ function getUserFiles(username) {
   return result;
 }
 
+function getFile(username, file){
+  try{const theFile = fs.readFileSync(
+    `${path.resolve("./public")}/users/${username}/${file}`)
+    return theFile;
+  }
+  catch(err){
+    return null;
+  }  
+}
+
+router.get("/:username/:filename", (req, res)=>{
+  const currFile= getFile(req.params.username, req.params.filename)
+  if(!currFile) res.status(404).send("404 not found");
+  res.send(JSON.stringify(currFile))
+})
+
+router.patch("/:username/:filename", (req, res)=>{
+  const currName= req.params.filename;
+  const newName= req.body.name;
+
+  fs.rename(currName, newName, (err) => {
+    if (err) {
+      console.error(`Error renaming file: ${err}`);
+    } else {
+      console.log('File has been renamed successfully.');
+    }
+  });
+})
+
+router.delete("/:username/:filename", (req, res)=>{
+  filePath= `${path.resolve("./public")}/users/${req.params.username}/${req.params.filename}`;
+
+  if (fs.existsSync(filePath)) {
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error(`Error deleting file: ${err}`);
+      } else {
+        console.log('File has been deleted successfully.');
+      }
+    });
+  } else {
+    console.log('File does not exist.');
+  }
+
+})
+
+
+
 module.exports = router;
