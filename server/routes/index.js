@@ -34,30 +34,50 @@ router.post("/", (req, res) => {
 });
 
 router.get("/:username", (req, res) => {
-  res.send(getUserFiles(req.params.username));
+  const userFiles = getUserFiles(req.params.username);
+  if (!userFiles) res.status(404).send("404 not found");
+  res.send(JSON.stringify(userFiles));
 });
 
 function getUserFiles(username) {
   const result = [];
-  const firstFiles = fs.readdirSync(
-    `${path.resolve("./public")}/users/${username}`
-  );
-  firstFiles.forEach(async (file) => {
-    const stats = fs.statSync(
-      `${path.resolve("./public")}/users/${username}/${file}`
+  try {
+    const firstFiles = fs.readdirSync(
+      `${path.resolve("./public")}/users/${username}`
     );
-    if (!stats.isDirectory()) {
-      result.push({ name: file, type: "File" });
-    } else {
-      result.push({ name: file, type: "Directory" });
-      const secondFiles = fs.readdirSync(
+    firstFiles.forEach(async (file) => {
+      const stats = fs.statSync(
         `${path.resolve("./public")}/users/${username}/${file}`
       );
-      secondFiles.forEach((file) => {
-        result.push({ name: file, type: "File" });
-      });
-    }
-  });
+      if (!stats.isDirectory()) {
+        result.push({
+          name: file,
+          type: "File",
+          size_KiloByte: stats.size,
+          extensionName: path.extname(file),
+        });
+      } else {
+        result.push({
+          name: file,
+          type: "Directory",
+          size_KiloByte: stats.size,
+        });
+        const secondFiles = fs.readdirSync(
+          `${path.resolve("./public")}/users/${username}/${file}`
+        );
+        secondFiles.forEach((file) => {
+          result.push({
+            name: file,
+            type: "File",
+            size_KiloByte: stats.size,
+            extensionName: path.extname(file),
+          });
+        });
+      }
+    });
+  } catch (e) {
+    return null;
+  }
   return result;
 }
 
