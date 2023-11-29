@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -14,9 +13,9 @@ function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: { username: userName, password: passWord },
+        body: JSON.stringify({ username: userName, password: passWord }),
       });
-      if (found.status === 404) throw new Error("user was not found");
+      if (found.status !== 200) throw new Error("user was not found");
       goToUserSpace(`/${userName}`);
     } catch (err) {
       console.log(err);
@@ -24,7 +23,7 @@ function Login() {
   }
   return (
     <>
-      <form action="http://localhost:3000/" method="post">
+      <form>
         <label htmlFor="username">username:</label>
         <input
           name="username"
@@ -44,7 +43,7 @@ function Login() {
           }}
         />
 
-        <button onClick={checkUser}></button>
+        <button onClick={checkUser}>Login</button>
       </form>
     </>
   );
