@@ -23,7 +23,6 @@ const users = [
 ];
 
 router.post("/", (req, res) => {
-  // const userBody = JSON.parse(req.body);
   console.log(req.body);
   const currUser = users.find(
     (user) =>
