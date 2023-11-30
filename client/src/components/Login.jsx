@@ -55,6 +55,7 @@ function Login() {
           <button className="btns" onClick={checkUser}>
             Login
           </button>
+          {!userFound && <p style={{ color: "red" }}>user not found</p>}
         </form>
       </div>
     </>
