@@ -12,6 +12,10 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/:username" element={<UserSpace />} />
           <Route path="/:username/:filename" element={<ShowData />} />
+          <Route
+            path="/:username/:directory/:filename"
+            element={<ShowData />}
+          />
         </Routes>
       </BrowserRouter>
     </>

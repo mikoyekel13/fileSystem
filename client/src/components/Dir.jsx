@@ -13,7 +13,8 @@ const Dir = (props) => {
       let found = await fetch(`http://localhost:3000${currUser}/${props.name}`);
       if (!found.ok) throw new Error("error accoured");
       found = await found.json();
-      setDirData(found);
+      console.log(found);
+      setDirData(found.map((item) => item.name));
       setShowData((prev) => !prev);
     } catch (err) {
       console.log(err);
@@ -22,7 +23,7 @@ const Dir = (props) => {
   }
 
   function enterDir() {
-    goToDirData(`${currUser}/${props.name}`);
+    goToDirData(`//http://localhost:5173${currUser}/${props.name}`);
   }
 
   async function renameDir() {
@@ -77,7 +78,14 @@ const Dir = (props) => {
           Delete
         </button>
       </form>
-      {showData && <div>{dirData}</div>}
+      {showData &&
+        dirData &&
+        dirData.map((file, index) => (
+          <div key={index}>
+            <h4>{file}</h4>
+            <br />
+          </div>
+        ))}
     </>
   );
 };
