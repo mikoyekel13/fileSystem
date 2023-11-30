@@ -50,31 +50,33 @@ const File = (props) => {
 
   return (
     <>
-      <h3>{props.name}</h3>
-      <form>
-        <button
-          className="inbtn"
-          type="button"
-          onClick={() => setShowInfo((prev) => !prev)}
-        >
-          Info
-        </button>
-        <button className="inbtn" type="button" onClick={showData}>
-          Show
-        </button>
-        <button className="inbtn" type="button" onClick={renameFile}>
-          Rename
-        </button>
-        <button className="inbtn" type="button" onClick={deleteFile}>
-          Delete
-        </button>
-      </form>
-      {showInfo && (
-        <div>
-          <h4>size in Kb: {props.size}</h4>
-          <h4>extension name: {props.extension}</h4>
-        </div>
-      )}
+      <div className="fileForm-container file">
+        <h3>{props.name}</h3>
+        <form className="fileForm">
+          <button
+            className="inbtn"
+            type="button"
+            onClick={() => setShowInfo((prev) => !prev)}
+          >
+            Info
+          </button>
+          <button className="inbtn" type="button" onClick={showData}>
+            Show
+          </button>
+          <button className="inbtn" type="button" onClick={renameFile}>
+            Rename
+          </button>
+          <button className="inbtn" type="button" onClick={deleteFile}>
+            Delete
+          </button>
+        </form>
+        {showInfo && (
+          <div>
+            <h4>size in Kb: {props.size}</h4>
+            <h4>extension name: {props.extension}</h4>
+          </div>
+        )}
+      </div>
     </>
   );
 };

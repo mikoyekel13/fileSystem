@@ -62,29 +62,31 @@ const Dir = (props) => {
 
   return (
     <>
-      <h3>{props.name} (directory)</h3>
-      <form className="file-dir">
-        <button className="inbtn" type="button" onClick={showDataFunc}>
-          Show
-        </button>
-        <button className="inbtn" type="button" onClick={enterDir}>
-          Enter
-        </button>
-        <button className="inbtn" type="button" onClick={renameDir}>
-          Rename
-        </button>
-        <button className="inbtn" type="button" onClick={deleteDir}>
-          Delete
-        </button>
-      </form>
-      {showData &&
-        dirData &&
-        dirData.map((file, index) => (
-          <div key={index}>
-            <h4>{file}</h4>
-            <br />
-          </div>
-        ))}
+      <div className="fileForm-container dir">
+        <h3>{props.name} (directory)</h3>
+        <form className="file-dir">
+          <button className="inbtn" type="button" onClick={showDataFunc}>
+            Show
+          </button>
+          <button className="inbtn" type="button" onClick={enterDir}>
+            Enter
+          </button>
+          <button className="inbtn" type="button" onClick={renameDir}>
+            Rename
+          </button>
+          <button className="inbtn" type="button" onClick={deleteDir}>
+            Delete
+          </button>
+        </form>
+        {showData &&
+          dirData &&
+          dirData.map((file, index) => (
+            <div key={index}>
+              <h4>{file}</h4>
+              <br />
+            </div>
+          ))}
+      </div>
     </>
   );
 };

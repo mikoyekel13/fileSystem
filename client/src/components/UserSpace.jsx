@@ -41,29 +41,31 @@ function UserSpace() {
       <h2>
         {localStorage.getItem("currUser")} {"=>"} Home Directory
       </h2>
-      <button type="button" onClick={logOut}>
+      <button className="logout" type="button" onClick={logOut}>
         Log out
       </button>
-      {userFiles.length > 0 &&
-        userFiles.map((file, index) => {
-          {
-            return file.type === "File" ? (
-              <File
-                key={index}
-                name={file.name}
-                size={file.size_KiloByte}
-                extension={file.extensionName}
-                setFilesChanged={setFilesChanged}
-              />
-            ) : (
-              <Dir
-                key={index}
-                name={file.name}
-                setFilesChanged={setFilesChanged}
-              />
-            );
-          }
-        })}
+      <div className="drive-container">
+        {userFiles.length > 0 &&
+          userFiles.map((file, index) => {
+            {
+              return file.type === "File" ? (
+                <File
+                  key={index}
+                  name={file.name}
+                  size={file.size_KiloByte}
+                  extension={file.extensionName}
+                  setFilesChanged={setFilesChanged}
+                />
+              ) : (
+                <Dir
+                  key={index}
+                  name={file.name}
+                  setFilesChanged={setFilesChanged}
+                />
+              );
+            }
+          })}
+      </div>
     </>
   );
 }

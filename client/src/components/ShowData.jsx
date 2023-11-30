@@ -51,7 +51,7 @@ const ShowData = () => {
         {localStorage.getItem("currUser")} {"=>"} Home Directory {"=>"}{" "}
         {currDir} {imgName && imgName !== currDir && "=> " + imgName}
       </h2>
-      <button type="button" onClick={logOut}>
+      <button className="logout" type="button" onClick={logOut}>
         Log out
       </button>
       {!isFile &&
