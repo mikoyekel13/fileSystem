@@ -11,11 +11,10 @@ const Dir = (props) => {
   async function showDataFunc() {
     try {
       let found = await fetch(`http://localhost:3000${currUser}/${props.name}`);
-      let found = await fetch(`http://localhost:3000${currUser}/${props.name}`);
       if (!found.ok) throw new Error("error accoured");
       found = await found.json();
-      found = found.json();
-      setDirData(found.name);
+      console.log(found);
+      setDirData(found.map((item) => item.name));
       setShowData((prev) => !prev);
     } catch (err) {
       console.log(err);
@@ -24,7 +23,7 @@ const Dir = (props) => {
   }
 
   function enterDir() {
-    goToDirData(`${currUser}/${props.name}`);
+    goToDirData(`//http://localhost:5173${currUser}/${props.name}`);
   }
 
   async function renameDir() {
@@ -80,11 +79,12 @@ const Dir = (props) => {
         </button>
       </form>
       {showData &&
+        dirData &&
         dirData.map((file, index) => (
-          <>
-            <h4 key={index}>{file}</h4>
+          <div key={index}>
+            <h4>{file}</h4>
             <br />
-          </>
+          </div>
         ))}
     </>
   );

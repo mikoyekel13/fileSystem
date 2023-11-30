@@ -12,15 +12,15 @@ const ShowData = () => {
   extension = extension[extension.length - 1];
   let imgName = currLocation.split("/");
   imgName = imgName[extension.length - 1];
-  console.log(imgName);
 
   useEffect(() => {
     async function loadFileData() {
       try {
         let fileData = await fetch(`http://localhost:3000${currLocation}`);
-        if (fileData.status !== 200) throw new Error("no data found");
-        if (typeof fileData === "object") {
-          fileData = await fileData.json();
+        if (!fileData.ok) throw new Error("no data found");
+        fileData = await fileData.json();
+        console.log(fileData);
+        if (fileData.length > 0) {
           setIsFile(false);
         } else {
           setIsFile(true);
