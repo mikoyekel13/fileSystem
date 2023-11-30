@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import File from "./File";
 import Dir from "./Dir";
 
@@ -8,6 +8,7 @@ function UserSpace() {
   const currUser = location.pathname;
   const [userFiles, setUserFiles] = useState([]);
   const [filesChanged, setFilesChanged] = useState(false);
+  const toLogin = useNavigate();
 
   useEffect(() => {
     async function loadFiles() {
@@ -22,13 +23,27 @@ function UserSpace() {
         return null;
       }
     }
+    if (localStorage.getItem("currUser") === "undefined") {
+      toLogin("/");
+    }
     loadFiles().then((value) => {
       setUserFiles(value);
     });
-  }, [currUser, filesChanged]);
+  }, [currUser, filesChanged, toLogin]);
+
+  function logOut() {
+    localStorage.setItem("currUser", "undefined");
+    toLogin("/");
+  }
 
   return (
     <>
+      <h2>
+        {localStorage.getItem("currUser")} {"=>"} Home Directory
+      </h2>
+      <button type="button" onClick={logOut}>
+        Log out
+      </button>
       {userFiles.length > 0 &&
         userFiles.map((file, index) => {
           {

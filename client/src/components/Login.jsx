@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 function Login() {
   const [userName, setUserName] = useState("");
   const [passWord, setPassword] = useState("");
+  const [userFound, setUserFound] = useState(true);
   const goToUserSpace = useNavigate();
   async function checkUser(e) {
     e.preventDefault();
@@ -16,9 +17,12 @@ function Login() {
         body: JSON.stringify({ username: userName, password: passWord }),
       });
       if (!found.ok) throw new Error("user was not found");
+      setUserFound(true);
+      localStorage.setItem("currUser", userName);
       goToUserSpace(`/${userName}`);
     } catch (err) {
       console.log(err);
+      setUserFound(false);
     }
   }
   return (
