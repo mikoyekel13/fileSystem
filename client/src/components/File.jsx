@@ -10,7 +10,7 @@ const File = (props) => {
   extension = extension[extension.length - 1];
 
   async function showData() {
-    goToFileData(`//http://localhost:5173${currLocation}/${props.name}`);
+    goToFileData(`${currLocation}/${props.name}`);
   }
 
   async function renameFile() {

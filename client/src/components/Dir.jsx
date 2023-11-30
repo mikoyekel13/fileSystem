@@ -13,7 +13,6 @@ const Dir = (props) => {
       let found = await fetch(`http://localhost:3000${currUser}/${props.name}`);
       if (!found.ok) throw new Error("error accoured");
       found = await found.json();
-      console.log(found);
       setDirData(found.map((item) => item.name));
       setShowData((prev) => !prev);
     } catch (err) {
@@ -23,7 +22,7 @@ const Dir = (props) => {
   }
 
   function enterDir() {
-    goToDirData(`//http://localhost:5173${currUser}/${props.name}`);
+    goToDirData(`${currUser}/${props.name}`);
   }
 
   async function renameDir() {

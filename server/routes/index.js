@@ -70,7 +70,8 @@ function getUserFiles(username) {
 function getFile(username, file) {
   try {
     const theFile = fs.readFileSync(
-      `${path.resolve("./public")}/users/${username}/${file}`
+      `${path.resolve("./public")}/users/${username}/${file}`,
+      { encoding: "utf-8" }
     );
     return theFile;
   } catch (err) {
@@ -91,7 +92,6 @@ function getDir(username, file, stats) {
         size_KiloByte: stats.size,
         extensionName: path.extname(file),
       });
-      console.log(result);
     });
     return result;
   } catch (err) {
@@ -108,7 +108,7 @@ router.get("/:username/:filename", (req, res) => {
   if (stats.isDirectory()) {
     const currDir = getDir(req.params.username, req.params.filename, stats);
     if (!currDir) res.status(404).send("404 not found");
-    res.send(JSON.stringify(currDir));
+    res.json(currDir);
   } else {
     const currFile = getFile(req.params.username, req.params.filename);
     if (!currFile) res.status(404).send("404 not found");
@@ -210,13 +210,12 @@ router.get("/:username/:dirname/:filename", (req, res) => {
     const theFile = fs.readFileSync(
       `${path.resolve("./public")}/users/${req.params.username}/${
         req.params.dirname
-      }/${req.params.filename}`
+      }/${req.params.filename}`,
+      { encoding: "utf-8" }
     );
-    // console.log(`theFile: ${theFile}`);
-    res.send(JSON.stringify(theFile));
+    res.json(theFile);
   } catch (err) {
-    console.log(err);
-    res.status(404).res.send("404 not found");
+    res.status(404).send("404 not found");
   }
 });
 
