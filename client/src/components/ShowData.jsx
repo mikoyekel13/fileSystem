@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import File from "./File";
 
 const ShowData = () => {
@@ -12,7 +12,8 @@ const ShowData = () => {
   extension = extension[extension.length - 1];
   let locationSplit = currLocation.split("/");
   const currDir = locationSplit[2];
-  const imgName = locationSplit[extension.length - 1];
+  const imgName = locationSplit[locationSplit.length - 1];
+  const toLogin = useNavigate();
 
   useEffect(() => {
     async function loadFileData() {
@@ -31,13 +32,28 @@ const ShowData = () => {
         return null;
       }
     }
+    if (localStorage.getItem("currUser") === "undefined") {
+      toLogin("/");
+    }
     loadFileData().then((value) => {
       setCurrData(value);
     });
-  }, [currLocation, filesChanged]);
+  }, [currLocation, filesChanged, toLogin]);
+
+  function logOut() {
+    localStorage.setItem("currUser", "undefined");
+    toLogin("/");
+  }
 
   return (
     <>
+      <h2>
+        {localStorage.getItem("currUser")} {"=>"} Home Directory {"=>"}{" "}
+        {currDir} {imgName && imgName !== currDir && "=> " + imgName}
+      </h2>
+      <button type="button" onClick={logOut}>
+        Log out
+      </button>
       {!isFile &&
         !!currData &&
         currData.map((file, index) => (
@@ -49,7 +65,7 @@ const ShowData = () => {
             setFilesChanged={setFilesChanged}
           />
         ))}
-      {isFile && !!imgName && (
+      {isFile && !!imgName && !extension.includes("/") && (
         <div>
           {extension === "txt" ? (
             <p>{currData}</p>
