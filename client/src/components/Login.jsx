@@ -23,28 +23,36 @@ function Login() {
   }
   return (
     <>
-      <form>
-        <label htmlFor="username">username:</label>
-        <input
-          name="username"
-          type="text"
-          value={userName}
-          onChange={(e) => {
-            setUserName(e.target.value);
-          }}
-        />
-        <label htmlFor="password">password:</label>
-        <input
-          name="password"
-          type="password"
-          value={passWord}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        />
+      <div id="container-form">
+        <form className="form">
+          <div>
+            <label htmlFor="username">username:</label>
+            <input
+              name="username"
+              type="text"
+              value={userName}
+              onChange={(e) => {
+                setUserName(e.target.value);
+              }}
+            />
+          </div>
+          <div>
+            <label htmlFor="password">password:</label>
+            <input
+              name="password"
+              type="password"
+              value={passWord}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            />
+          </div>
 
-        <button onClick={checkUser}>Login</button>
-      </form>
+          <button className="btns" onClick={checkUser}>
+            Login
+          </button>
+        </form>
+      </div>
     </>
   );
 }

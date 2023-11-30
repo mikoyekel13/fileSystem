@@ -63,17 +63,17 @@ const Dir = (props) => {
   return (
     <>
       <h3>{props.name} (directory)</h3>
-      <form>
-        <button type="button" onClick={showDataFunc}>
+      <form className="file-dir">
+        <button className="inbtn" type="button" onClick={showDataFunc}>
           Show
         </button>
-        <button type="button" onClick={enterDir}>
+        <button className="inbtn" type="button" onClick={enterDir}>
           Enter
         </button>
-        <button type="button" onClick={renameDir}>
+        <button className="inbtn" type="button" onClick={renameDir}>
           Rename
         </button>
-        <button type="button" onClick={deleteDir}>
+        <button className="inbtn" type="button" onClick={deleteDir}>
           Delete
         </button>
       </form>

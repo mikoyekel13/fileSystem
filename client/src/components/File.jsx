@@ -52,16 +52,20 @@ const File = (props) => {
     <>
       <h3>{props.name}</h3>
       <form>
-        <button type="button" onClick={() => setShowInfo((prev) => !prev)}>
+        <button
+          className="inbtn"
+          type="button"
+          onClick={() => setShowInfo((prev) => !prev)}
+        >
           Info
         </button>
-        <button type="button" onClick={showData}>
+        <button className="inbtn" type="button" onClick={showData}>
           Show
         </button>
-        <button type="button" onClick={renameFile}>
+        <button className="inbtn" type="button" onClick={renameFile}>
           Rename
         </button>
-        <button type="button" onClick={deleteFile}>
+        <button className="inbtn" type="button" onClick={deleteFile}>
           Delete
         </button>
       </form>

@@ -1,0 +1,48 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+}
+body{
+    display: flex;
+      
+}
+#container-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 100vw;
+    height: 100vh;
+    
+}
+.form{
+    margin: 20%;
+    padding: 10vw;
+    border: 7px solid  rgb(23, 117, 212);
+    border-radius: 10%;
+    justify-content: center;
+    width: 40vw;
+    
+    
+}
+/* rgb(124, 0, 0) */
+input, label{
+    margin: auto;
+    font-family:'Franklin Gothic Medium';
+    font-size: 3vh;
+    
+}
+
+.btns{
+    margin: 10%;
+    background-color: rgb(67, 79, 205);
+    color: white;
+    padding-inline: 7vw;
+}
+
+.inbtn{
+    background-color: rgb(67, 79, 205);
+    color: white;
+    margin-inline: 0.5vw;
+}
